@@ -1,0 +1,72 @@
+MyPascal is a name for the academic
+project mypas, which is a simplified
+and modified Pascal
+
+Syntax::
+
+Initial symbol: mypas
+
+mypas -> PROGRAM ID ; body .
+
+body -> declarative stmtblk
+
+declarative -> [ VAR varclause { varclause } ] methods
+
+varclause -> varlist : typespec ;
+
+varlist -> varspec { , varspec }
+
+varspec -> ID
+
+typespec -> INTEGER | REAL | DOUBLE | BOOLEAN
+
+methods -> { procedure | function }
+
+procedure -> PROCEDURE ID formalparm ; body ;
+
+function -> FUNCTION ID formalparm : typespec ; body ;
+
+stmtlist -> stmt { ; stmt }
+
+stmt ->   stmtblk
+	| ifstmt
+	| whlstmt
+	| repstmt
+	| smpexpr
+	| <empty>
+
+stmtblk  -> BEGIN stmtlist END
+ifstmt   -> IF expr THEN stmt [ ELSE stmt ]
+whlstmt  -> WHILE expr DO stmt
+repstmt  -> REPEAT stmtlist UNTIL expr
+
+smpexpr -> [ + | - | NOT ] term { oplus term }
+
+	oplus   -> + | - | OR
+
+term    -> factor { otimes factor }
+
+	otimes  -> * | / | DIV | MOD | AND
+
+factor  -> variable [ ":=" expr ] | constant | ( expr )
+
+variable -> ID
+
+constant -> UINT | FLT | TRUE | FALSE
+
+expr   -> smpexpr [ otilde smpexpr ]
+
+	otilde ->   >
+		  | >= # GEQ
+		  | <
+		  | <= # LEQ
+		  | <> # NEQ
+		  | =
+
+Keywords:: 
+	BEGIN, END, IF, THEN, ELSE, WHILE, DO, REPEAT, UNTIL,
+	PROGRAM, VAR, PROCEDURE, FUNCTION,
+	INTEGER, REAL, DOUBLE, BOOLEAN,
+	NOT, OR, DIV, MOD, AND,
+	TRUE, FALSE
+
