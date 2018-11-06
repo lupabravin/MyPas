@@ -1,9 +1,9 @@
 /**@<keywords.c>::**/
 
-#include <stdlib.h>
-#include <string.h>
-#include <tokens.h>
-#include <keywords.h>
+#include "stdlib.h"
+#include "string.h"
+#include "tokens.h"
+#include "keywords.h"
  
 char *keyword[] = {
 	"begin",

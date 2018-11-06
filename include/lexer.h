@@ -1,10 +1,10 @@
-/**@<lexer.h>::**/
+/**@<lexer.h"::**/
 
 #pragma once
 
-#include <ctype.h>
-#include <stdio.h>
-#include <tokens.h>
+#include "ctype.h"
+#include "stdio.h"
+#include "tokens.h"
 
 #define 	MAXIDLEN	63
 

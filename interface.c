@@ -1,7 +1,7 @@
 /**@<interface.c>::**/
-#include <stdlib.h>
-#include <stdio.h>
-#include <lexer.h>
+#include "stdlib.h"
+#include "stdio.h"
+#include "lexer.h"
 extern FILE    *source_code;
 int             gettoken(FILE *);
 

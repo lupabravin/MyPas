@@ -1,13 +1,13 @@
 /**@<parser.c>::**/
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <lexer.h>
-#include <tokens.h>
-#include <interface.h>
-#include <keywords.h>
-#include <parser.h>
+#include "stdlib.h"
+#include "stdio.h"
+#include "string.h"
+#include "lexer.h"
+#include "tokens.h"
+#include "interface.h"
+#include "keywords.h"
+#include "parser.h"
 
 /*********************************************************************
 MyPascal is a name for the academic
@@ -24,7 +24,7 @@ void mypas(void)
 {
     match(PROGRAM);
     match(ID);
-	match(';');
+	match(';'); /* ; was missing match */
     body();
 }
 /*********************************************************************
@@ -83,7 +83,7 @@ typespec(void)
     case INTEGER:
     case REAL:
     case DOUBLE:
-        match(lookahead);
+        match(lookahead);   /* Breaks were missing in this switch */
 		break;
     default:
         match(BOOLEAN);
@@ -147,10 +147,14 @@ void formalparm(void){
 
 void argdef(void) {
 
-	if (lookahead == VAR) match(VAR);
+	if (lookahead == VAR) 
+		match(VAR);
 	
 	match(ID);
-	while (lookahead == ',') { match(','); match(ID); }
+	while (lookahead == ',') { 
+		match(','); 
+		match(ID); 
+	}
 
 	match(':');
 	typespec();
@@ -218,7 +222,7 @@ stmt(void)
         case FLTP:
         case FALSE:
         case TRUE:
-		case ID:
+		case ID:			/*ID added to factor*/
             factor();
         }
         /*
@@ -387,7 +391,6 @@ void factor(void)
 
 int assgn(void)
 {
-	
     if (lookahead == ASGN) {
         match(ASGN);
         expr();

@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <mypas.h>
+#include "stdio.h"
+#include "mypas.h"
 
 FILE           *source_code;
 
@@ -13,6 +13,7 @@ main(int argc, const char *argv[])
     }
 
     lookahead = gettoken(source_code);
+
 
     mypas();
 

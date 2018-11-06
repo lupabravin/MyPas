@@ -1,12 +1,12 @@
 #pragma once
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <lexer.h>
-#include <tokens.h>
-#include <interface.h>
-#include <keywords.h>
+#include "stdlib.h"
+#include "stdio.h"
+#include "string.h"
+#include "lexer.h"
+#include "tokens.h"
+#include "interface.h"
+#include "keywords.h"
 
 /* parser components */
 void body(void);

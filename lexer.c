@@ -1,5 +1,5 @@
 /**@<lexer.c>::**/
-#include <lexer.h>
+#include "lexer.h"
 
 token_t         iskeyword(const char *symbol);
 
