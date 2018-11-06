@@ -24,10 +24,10 @@ void mypas(void)
 {
     match(PROGRAM);
     match(ID);
-	match(';'); /* ; was missing match */
+	match(';'); /*  missing ; match from previous version: mypas-skeleton */
     body();
 }
-/*********************************************************************
+/************************* Program Body ***************************
 body -> declarative blkstmt
 */
 void body(void)
@@ -35,7 +35,7 @@ void body(void)
     declarative();
     blkstmt();
 }
-/*********************************************************************
+/************************ Declaration of Initial Variables ********************************
 declarative -> [ VAR varclause { varclause } ] methods
 */
 void
@@ -50,7 +50,7 @@ declarative(void)
     }
     methods();
 }
-/*********************************************************************
+/************************ Recognizes single variables, groups of variables and its types ******************
 varclause -> varlist ':' typespec ;
 */
 void
@@ -61,7 +61,8 @@ varclause(void)
     typespec();
     match(';');
 }
-/*********************************************************************
+
+/************************* Groups variables ******************************
 varlist -> varspec { , varspec }
 */
 void
@@ -73,7 +74,7 @@ varlist(void)
         match(ID);
     }
 }
-/*********************************************************************
+/************************ Inspect Types ***********************************
 typespec -> INTEGER | REAL | DOUBLE | BOOLEAN
 */
 void
@@ -83,14 +84,14 @@ typespec(void)
     case INTEGER:
     case REAL:
     case DOUBLE:
-        match(lookahead);   /* Breaks were missing in this switch */
+        match(lookahead);   /* Breaks were missing in this switch from last version: mypas-skeleton */
 		break;
     default:
         match(BOOLEAN);
 		break;
     }
 }
-/*********************************************************************
+/************ Recognizes functions or procedures blocks *********************
 methods -> { procedure | function }
 */
 void
@@ -106,7 +107,7 @@ methods(void)
         }
     }
 }
-/*********************************************************************
+/************************** Procedure Inspect ********************************
 procedure -> PROCEDURE ID formalparm ';' body ;
 */
 void
@@ -119,7 +120,7 @@ procedure(void)
     body();
     match(';');
 }
-/*********************************************************************
+/****************** Functions and procedures parameters **********************
 
 /***********
  * formalparm -> [ '(' argdef {';' argdef } ')' ] 
@@ -149,19 +150,22 @@ void argdef(void) {
 
 	if (lookahead == VAR) 
 		match(VAR);
-	
+
+/********* This is the last version's (mypas-skeleton) code. Changed it to varlist() down below to avoid redundancy.
 	match(ID);
 	while (lookahead == ',') { 
 		match(','); 
 		match(ID); 
 	}
+****************************/
+
+	varlist();
 
 	match(':');
 	typespec();
 }
 
-
-/*
+/*********************** Function Inspect ****************************
 function -> FUNCTION ID formalparm ':' typespec ';' body ;
 */
 void
@@ -176,7 +180,7 @@ function(void)
     body();
     match(';');
 }
-/*********************************************************************
+/*********************  Recognizes a list of statements *****************************
 stmtlist -> stmt { ';' stmt }
 */
 void
@@ -188,7 +192,7 @@ stmtlist(void)
         stmt();
     }
 }
-/*********************************************************************
+/********************** Inspects statement structure *********************************
 stmt ->   blkstmt
 	| ifstmt
 	| whlstmt
@@ -222,7 +226,7 @@ stmt(void)
         case FLTP:
         case FALSE:
         case TRUE:
-		case ID:			/*ID added to factor*/
+		case ID: /* <---- ID was missing in last version (mypas-skeleton) and was added here in factor case*/
             factor();
         }
         /*
@@ -230,7 +234,7 @@ stmt(void)
          */ ;
     }
 }
-/*********************************************************************
+/*********************** Recognizes the begining and ending of statements **************************
 blkstmt  -> BEGIN stmtlist END
 */
 void
@@ -240,7 +244,7 @@ blkstmt(void)
     stmtlist();
     match(END);
 }
-/*********************************************************************
+/************************* Inspects IF-ELSE statement structure **************************
 ifstmt   -> IF expr THEN stmt [ ELSE stmt ]
 */
 void
@@ -255,7 +259,7 @@ ifstmt(void)
         stmt();
     }
 }
-/*********************************************************************
+/************************* Inspects WHILE-DO statement structure **************************
 whlstmt  -> WHILE expr DO stmt
 */
 void whlstmt(void)
@@ -265,7 +269,7 @@ void whlstmt(void)
  match(DO);
  stmt();
 }
-/*********************************************************************
+/************************* Inspects REPEAT-UNTIL statement structure **************************
 repstmt  -> REPEAT stmtlist UNTIL expr
 */
 void repstmt(void)
@@ -275,7 +279,7 @@ void repstmt(void)
   match(UNTIL);
   expr();
 }
-/*********************************************************************
+/************************** Expressions Syntax ****************************
 smpexpr -> [ + | - | NOT ] term { oplus term }
 
 	oplus   -> + | - | OR
@@ -299,6 +303,18 @@ expr   -> smpexpr [ relop smpexpr ]
 		  | <> # NEQ
 		  | =
 */
+
+
+/********************** Recognizes Relational Operations ***************************
+
+	relop ->    >
+				| >= # GEQ
+				| <
+				| <= # LEQ
+				| <> # NEQ
+				| =
+
+*/
 int
 isrelop(void)
 {
@@ -315,7 +331,7 @@ isrelop(void)
     }
     return 0;
 }
-/****************************************************************
+/************************ Recognizes expressions ************************************
 expr   -> smpexpr [ relop smpexpr ]
 */
 void
@@ -339,7 +355,7 @@ expr(void)
  smpexpr->--['+''-']--------|fact|---------->---
                             ------
  
- fact ->  ID | UINT | FLT | ( expr )
+ factor ->  ID | UINT | FLT | ( expr )
 
 **********************************************/
 void
@@ -371,6 +387,10 @@ smpexpr(void)
 
 }
 
+/***************** Recognizes factors ******************
+ *		factor ->  ID | UINT | FLT | ( expr )
+ */
+
 void factor(void)
 {
     switch (lookahead) {
@@ -388,6 +408,10 @@ void factor(void)
         match(')');
     }
 }
+
+/***************** Recognizes assignment operations ******************
+ *		variable [ ":=" expr ]
+ */
 
 int assgn(void)
 {

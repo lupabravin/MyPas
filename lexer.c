@@ -31,9 +31,10 @@ skipspaces(FILE * tape)
 
 char            lexeme[MAXIDLEN + 1];
 
-/*
+/*********** Check if next input is an ID 
  * ID = [A-Za-z][_A-Za-z0-9]*
  */
+
 token_t
 isID(FILE * tape)
 {
@@ -55,12 +56,14 @@ isID(FILE * tape)
     return 0;
 }
 
+/********** Check if next input is INTEGER or FLOAT
 /*
  * NUM = UINT | FLTP
  * UINT = [1-9][0-9]* | 0
  * FLTP = ( UINT'.'FRAC? | '.'FRAC ) EE? | UINT EE
  *
  */
+
 token_t
 isNUM(FILE * tape)
 {
@@ -114,7 +117,7 @@ isNUM(FILE * tape)
     ungetc(lexeme[0], tape);
     return token;
 }
-/*******************************
+/********** Check if next input is a RELATIONAL OPERATION
 	relop ->    >
 		  | >= # GEQ
 		  | <
@@ -152,6 +155,12 @@ isRELOP(FILE * tape)
     return 0;
 }
 
+/********** Check if next input is an ASSIGNMENT OPERATION
+
+	ASGN ->  :=
+
+***********/
+
 token_t isASGN(FILE *tape)
 {
     if ( (lexeme[0] = getc(tape)) == ':' ) {
@@ -165,6 +174,7 @@ token_t isASGN(FILE *tape)
     return 0;
 }
 
+/* Main Token Verifier. Verifies and returns the next token or only the next character. */
 token_t
 gettoken(FILE * tape)
 {
